@@ -40,17 +40,18 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
             {
                 _anim.SetBool("Walking",true);
-                _destination = hit.point;
-
                 _agent.destination = hit.point;
+                _destination = hit.point;
             }
         }
+
         float _distance = Vector3.Distance(transform.position, _destination);
         
         if (_distance < 2.5f)
         {
             _anim.SetBool("Walking", false);
         }
+
     }
 
         
