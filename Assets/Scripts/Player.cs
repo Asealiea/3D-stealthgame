@@ -10,8 +10,10 @@ public class Player : MonoBehaviour
         //reference to navmesh
     private NavMeshAgent _agent;
     private Animator _anim;
-
     private Vector3 _destination;
+    private bool _hasCoin = true;
+    [SerializeField] private GameObject _coin;
+    [SerializeField] private AudioClip _coinSound;
 
     void Start()
     {
@@ -52,6 +54,32 @@ public class Player : MonoBehaviour
             _anim.SetBool("Walking", false);
         }
 
+        if (Input.GetMouseButtonDown(1) && _hasCoin)
+        {
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
+            {
+                Instantiate(_coin, hit.point, Quaternion.identity);
+                AudioSource.PlayClipAtPoint(_coinSound, hit.point);
+                _anim.SetTrigger("Throwing");
+                _hasCoin = false;
+                CoinDistraction(hit.point);
+            }
+
+        }
+
+    }
+
+    private void CoinDistraction(Vector3 Coin)
+    {
+        GameObject[] guards = GameObject.FindGameObjectsWithTag("Guard1");
+        if (guards.Length != 0)
+        {
+            foreach (var g in guards)
+            {
+                GuardAI gAI = g.GetComponent<GuardAI>();
+                gAI.GuardsMoveOut(Coin);
+            }
+        }
     }
 
         

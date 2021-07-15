@@ -11,6 +11,8 @@ public class GuardAI : MonoBehaviour
     private bool _reverse;
     private bool _breather;
     private Animator _anim;
+    private bool _coinTossed = false;
+    private Vector3 _coinPos;
 
 
     // Start is called before the first frame update
@@ -32,8 +34,13 @@ public class GuardAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_waypoints.Count > 0 && _waypoints[_curentTarget] != null)
+        if (_waypoints.Count > 0 && _waypoints[_curentTarget] != null && !_coinTossed)
         {
+            if (_waypoints.Count <= 1)
+            {
+                _anim.SetBool("Walking", false);
+                return;
+            }
 
             _agent.SetDestination(_waypoints[_curentTarget].position);
             float distance = Vector3.Distance(transform.position,_waypoints[_curentTarget].position);
@@ -45,6 +52,15 @@ public class GuardAI : MonoBehaviour
                 _breather = true;
                 StartCoroutine(WaitForBreather());
 
+            }
+        }
+        else
+        {
+            float distance = Vector3.Distance(transform.position, _coinPos);
+            if (distance < 2f) 
+            {
+                _anim.SetTrigger("Alert");
+                StartCoroutine(CoinDistractionCoolDown());
             }
         }
 
@@ -74,7 +90,24 @@ public class GuardAI : MonoBehaviour
             }
         }
         if (_anim != null)
-            _anim.SetBool("Walking", true);                
+        _anim.SetBool("Walking", true);                
         _breather = false;
+    }
+
+    public void GuardsMoveOut(Vector3 pos)
+    {
+        _agent.SetDestination(pos);
+        _anim.SetBool("Walking", true);
+        _coinTossed = true;
+        _coinPos = pos;                
+    }
+
+    IEnumerator CoinDistractionCoolDown()
+    {
+        yield return new WaitForSeconds(5f);
+        _coinTossed = false;
+       // _curentTarget = 0;
+        _agent.SetDestination(_waypoints[0].position);
+        yield break;
     }
 }
