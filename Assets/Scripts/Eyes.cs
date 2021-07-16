@@ -18,6 +18,7 @@ public class Eyes : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _gameOverCutScene.SetActive(true);
+            AudioManager.Instance.StopMusic();
 
             GameObject[] guards = GameObject.FindGameObjectsWithTag("Guard1");
             foreach (var guard in guards)

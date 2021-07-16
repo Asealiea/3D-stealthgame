@@ -53,6 +53,7 @@ public class GuardAI : MonoBehaviour
                 StartCoroutine(WaitForBreather());
 
             }
+            
         }
         else
         {
