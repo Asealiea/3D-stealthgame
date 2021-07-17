@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _coin;
     [SerializeField] private AudioClip _coinSound;
 
+
     void Start()
     {
         _anim = GetComponentInChildren<Animator>();
@@ -82,7 +83,6 @@ public class Player : MonoBehaviour
         }
     }
 
-        
 
 
 }

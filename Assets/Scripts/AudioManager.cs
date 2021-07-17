@@ -19,6 +19,8 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private AudioSource _voiceOverAudio;
     [SerializeField] private AudioSource _music;
+    [SerializeField] private AudioSource _sfx;
+    [SerializeField] private AudioSource _ambient;
 
     private void Awake()
     {
@@ -33,5 +35,11 @@ public class AudioManager : MonoBehaviour
     public void StopMusic()
     {
         _music.Stop();
+    }
+
+    public void PlaySfx(AudioClip CliptoPlay)
+    {
+        _sfx.clip = CliptoPlay;
+        _sfx.Play();
     }
 }

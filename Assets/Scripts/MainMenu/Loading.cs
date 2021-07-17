@@ -35,10 +35,9 @@ public class Loading : MonoBehaviour
             //checking if the loading has finished
             if (asyncOperation.progress >= 0.9f)
             {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    asyncOperation.allowSceneActivation = true;
-                }
+               
+                asyncOperation.allowSceneActivation = true;
+                
             }
             //wait till end of frame before looping back around
             yield return null;
